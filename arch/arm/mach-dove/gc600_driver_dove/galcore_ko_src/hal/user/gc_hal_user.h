@@ -2309,4 +2309,3 @@ gcoQUEUE_Commit(
 #endif
 
 #endif /* __gc_hal_user_h_ */
-

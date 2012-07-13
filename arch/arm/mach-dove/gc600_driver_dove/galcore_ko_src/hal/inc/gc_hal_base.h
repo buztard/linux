@@ -694,6 +694,11 @@ gcoOS_GetMilliTime(
 
 char* gcoOS_GetProgramName(char* buf, int size);
 
+/* return non-NULL means success. null-terminate guarantee! */
+gctSTRING gcoOS_GetProgramNameWithoutPath(
+    OUT gctSTRING buf,
+    IN const gctSIZE_T size
+    );
 #if MRVL_BENCH
 
 /*
@@ -725,6 +730,9 @@ typedef enum _apiBenchIndex  {
 	APIBENCH_INDEX_DRAWTEX,
 	APIBENCH_INDEX_BUFFERDATA,
 	APIBENCH_INDEX_BUFFERSUBDATA,
+	APIBENCH_INDEX_COMPILER_FRONTEND,
+	APIBENCH_INDEX_COMPILER_OPTIMIZING,
+	APIBENCH_INDEX_COMPILER_BACKEND,    /* i.e. LINKER */
 	APIBENCH_INDEX_MAX
 }apiBenchIndex;
 
@@ -746,6 +754,9 @@ typedef enum _apiBenchIndex  {
 	"glDrawTex",        \
 	"glBufferData",     \
 	"glBufferSubData",  \
+	"_glshCompileShader_frontEnd",  \
+	"_glshCompileShader_optimizing",\
+	"_glshLinkShaders", \
 }
 
 /*
@@ -777,6 +788,7 @@ typedef struct _gcoTIMER
  /*  global structure for api bench */
 typedef struct _gcoAPIBENCH
 {
+	gctFILE         	file;
 	/* frame count */
 	gctUINT32			frameCount;
 
@@ -815,6 +827,10 @@ void gcoDUMP_APIBenchPrint(
 void gcoDUMP_APIBenchInit(
 	IN gcoHAL Hal
 	);
+
+void gcoDUMP_APIBenchDestroy(
+    IN gcoHAL Hal
+    );
 
 void gcoDUMP_APIBenchFrame(
 	IN gcoHAL Hal
@@ -2627,4 +2643,3 @@ void gcoOS_SetLogFilter(IN unsigned int filter);
 #endif
 
 #endif /* __gc_hal_base_h_ */
-
